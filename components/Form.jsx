@@ -8,9 +8,21 @@ const Form = ({ title, formData, setFormData, handleSubmit, errorMsg }) => {
         <b>{title} Customer</b>
       </h3>
       <div className="container mt-2">
-        <div className="alert alert-danger" role="alert">
-          A simple danger alert—check it out!
-        </div>
+        {errorMsg.nameError && (
+          <div className="alert alert-danger" role="alert">
+            {errorMsg.nameError}
+          </div>
+        )}
+        {errorMsg.emailError && (
+          <div className="alert alert-danger" role="alert">
+            {errorMsg.emailError}
+          </div>
+        )}
+        {errorMsg.phnoError && (
+          <div className="alert alert-danger" role="alert">
+            {errorMsg.phnoError}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label required">
