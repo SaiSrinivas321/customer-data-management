@@ -4,21 +4,23 @@ import "../app/globals.css";
 const Form = ({ title, formData, setFormData, handleSubmit, errorMsg }) => {
   return (
     <Fragment>
-      <h3 className="text-center mt-5">
-        <b>{title} Customer</b>
-      </h3>
+      {title && (
+        <h3 className="text-center mt-5">
+          <b>{title} Customer</b>
+        </h3>
+      )}
       <div className="container mt-2">
-        {errorMsg.nameError && (
+        {errorMsg && errorMsg.nameError && (
           <div className="alert alert-danger" role="alert">
             {errorMsg.nameError}
           </div>
         )}
-        {errorMsg.emailError && (
+        {errorMsg && errorMsg.emailError && (
           <div className="alert alert-danger" role="alert">
             {errorMsg.emailError}
           </div>
         )}
-        {errorMsg.phnoError && (
+        {errorMsg && errorMsg.phnoError && (
           <div className="alert alert-danger" role="alert">
             {errorMsg.phnoError}
           </div>
@@ -69,8 +71,11 @@ const Form = ({ title, formData, setFormData, handleSubmit, errorMsg }) => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary">
-            Submit
+          <button
+            type="submit"
+            className={title ? "btn btn-primary" : "btn btn-success"}
+          >
+            {title ? "Add Customer" : "Edit Customer"}
           </button>
         </form>
       </div>

@@ -1,9 +1,10 @@
 "use client";
 import Form from "@components/Form";
 import { isValidEmail, isValidName, isValidPhoneNumber } from "@utils";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-const addCustomer = () => {
+
+const viewCustomer = ({ params }) => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -15,6 +16,15 @@ const addCustomer = () => {
     emailError: "",
     phnoError: "",
   });
+
+  const getCustomerData = async () => {
+    const response = await fetch(`/api/customer/${params.id}`);
+    const data = await response.json();
+    setFormData({ name: data.name, email: data.email, phno: data.phno });
+  };
+  useEffect(() => {
+    getCustomerData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,8 +44,8 @@ const addCustomer = () => {
       return;
     }
     try {
-      const response = await fetch("/api/customer/new", {
-        method: "POST",
+      const response = await fetch(`/api/customer/${params.id}`, {
+        method: "PATCH",
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
@@ -51,14 +61,18 @@ const addCustomer = () => {
     }
   };
   return (
-    <Form
-      title={"Add"}
-      formData={formData}
-      setFormData={setFormData}
-      handleSubmit={handleSubmit}
-      errorMsg={errorMsg}
-    />
+    <>
+      <h3 className="text-center mt-5">
+        <b>Customer Details</b>
+      </h3>
+      <Form
+        formData={formData}
+        setFormData={setFormData}
+        handleSubmit={handleSubmit}
+        errorMsg={errorMsg}
+      />
+    </>
   );
 };
 
-export default addCustomer;
+export default viewCustomer;
