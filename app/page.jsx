@@ -1,9 +1,21 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
+  const [customers, setCustomers] = useState([]);
+
+  const fetchCustomers = async () => {
+    const response = await fetch("/api/customer");
+    const data = await response.json();
+    setCustomers(data);
+  };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
 
   return (
     <main>
@@ -17,7 +29,7 @@ export default function Home() {
         >
           Add Customer
         </button>
-        <table className="table">
+        <table className="table text-center">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -27,18 +39,17 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
+            {customers.map((cust, ind) => {
+              return (
+                <tr key={cust._id}>
+                  <th scope="row">{ind + 1}</th>
+                  <td>{cust.name}</td>
+                  <td>{cust.email}</td>
+                  <td>{cust.phno}</td>
+                  <td></td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
